@@ -36,7 +36,7 @@ section {
 
 }
 
-#scoreX {
+#scoreX, #scoreO{
   margin: 1em;
   margin-left: 6em;
   margin-right: 5em;
@@ -47,28 +47,7 @@ section {
 
 }
 
-#numX {
-  margin: 0.2em;
-  padding: 0.5em;
-  padding-left: 1em;
-  padding-right: 2em;
-  background-color: white;
-  border: 2px solid #BBB8F9;
-
-}
-
-#scoreO {
-  margin: 1em;
-  margin-left: 6em;
-  margin-right: 5em;
-  padding: 0.5em;
-  border: 3px solid #BBB8F9;
-  background-color: #ECECF7;
-  display: block;
-
-}
-
-#numO {
+#numX, #numO {
   margin: 0.2em;
   padding: 0.5em;
   padding-left: 1em;
@@ -88,7 +67,7 @@ main {
   position: relative;
 }
 
-.boxes {
+.box {
   background-color: #ECECF7;
   font-size: 5em;
   padding: 0.1em;
@@ -96,43 +75,47 @@ main {
   margin: 0.2em;
   border: 3px groove #131072;
   border-radius: 5px;
-
+  width: 72px;
+  height: 108px;
 }
 
-.boxes:hover {
+.box:hover {
   color: white;
   background-color: #131072;
   border: 4px groove white;
   border-radius: 8px;
 }
 
-.boxes.Xmove {
+.images {
 
-  background-color: #BBB8F9;
-  font-size: 5em;
-  padding: 0.1em;
-  padding-top: 0;
-  margin: 0.2em;
-  border: 3px groove #131072;
-  border-radius: 5px;
-  width: 72px;
-  height: 108px;
+  height: 0.5em;
+  width: 0.5em;
 
 }
 
-.boxes.Omove {
+.box.Xmove {
 
-  background-color: #BBB8F9;
-  font-size: 5em;
-  padding: 0.1em;
-  padding-top: 0;
-  margin: 0.2em;
-  border: 3px groove #131072;
-  border-radius: 5px;
-  width: 72px;
-  height: 108px;
+    background-color: #BBB8F9;
+    background-image: url("./X.png");
+    background-position: center;
+    background-repeat: no-repeat;
+    text-indent: 100%;
+    white-space: nowrap;
+    overflow: hidden;
 
-}
+  }
+
+.box.Omove {
+
+    background-color: #BBB8F9;
+    background-image: url("./O.png");
+    background-position: center;
+    background-repeat: no-repeat;
+    text-indent: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+
+  }
 
 #box1 {
   position: absolute;
