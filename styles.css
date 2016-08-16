@@ -64,10 +64,13 @@ main {
 
   margin-top: 2em;
   margin-bottom: 0;
+  margin-left: 5.8em;
   position: relative;
 }
 
 .box {
+  display: inline-block;
+  float: left;
   background-color: #ECECF7;
   font-size: 5em;
   padding: 0.1em;
@@ -75,8 +78,8 @@ main {
   margin: 0.2em;
   border: 3px groove #131072;
   border-radius: 5px;
-  width: 72px;
-  height: 108px;
+  width: 108px;
+  height: 110px;
 }
 
 .box:hover {
@@ -93,7 +96,7 @@ main {
 
 }
 
-.box.Xmove {
+.box.Xmoves {
 
     background-color: #BBB8F9;
     background-image: url("./X.png");
@@ -105,7 +108,7 @@ main {
 
   }
 
-.box.Omove {
+.box.Omoves {
 
     background-color: #BBB8F9;
     background-image: url("./O.png");
@@ -117,60 +120,6 @@ main {
 
   }
 
-#box1 {
-  position: absolute;
-  top: 0%;
-  left: 20%;
-}
-
-#box2 {
-  position: absolute;
-  top: 0%;
-  right: 18%;
-}
-
-#box3 {
-  position: absolute;
-  top: 0%;
-  right: 40%;
-}
-
-#box4 {
-  position: absolute;
-  top: 20%;
-  left: 20%;
-}
-
-#box5 {
-  position: absolute;
-  top: 20%;
-  right: 18%;
-}
-
-#box6 {
-  position: absolute;
-  top: 20%;
-  right: 40%;
-}
-
-#box7 {
-  position: absolute;
-  top: 40%;
-  left: 20%;
-}
-
-#box8 {
-  position: absolute;
-  top: 40%;
-  right: 18%;
-}
-
-#box9 {
-  position: absolute;
-  top: 40%;
-  right: 40%;
-}
-
 button {
   padding: 0.6em;
   padding-left: 2em;
@@ -179,8 +128,8 @@ button {
   background-color: #D4D3F6;
   border: 1px solid #BBB8F9;
   position: absolute;
-  top: 65%;
-  right: 32%;
+  top: 69%;
+  right: 35.5%;
 
 }
 
@@ -202,11 +151,11 @@ img {
 #imgO {
   position: absolute;
   top: 21%;
-  left: 4%;
+  left: -15%;
 }
 
 #imgX {
   position: absolute;
   top: 34%;
-  left: 4%;
+  left: -15%;
 }

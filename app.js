@@ -1,123 +1,82 @@
   $(function () {
-
-
-    // Load in the required elements
     var turns = 0;
-    var noughts = $('#imgO');
-    var crosses = $('#imgX');
-    var xWins = 0;
-    var oWins = 0;
-
-
+    var wins = { "X": 0, "O": 0 };
+    var moves = { "X": [], "O": [] };
+    var player;
+    var allWins = [[1, 2, 3], [4, 5, 6], [7, 8, 9],
+                  [1, 4, 7], [2, 5, 8], [3, 6, 9],
+                  [3, 5, 7], [1, 5, 9] ];
 
     $('#reset').click(function (event) {
       event.preventDefault();
       reset();
-
     });
 
-    // When a span element is clicked this will start the game and enter an X first (player X starts )
+    $('.box').click(function (event) {
+      event.preventDefault();
+      player = (turns%2===0) ? "X" : "O";
+      if ($(this).hasClass('Xmoves') || $(this).hasClass('Omoves')) return alert('Please click an empty box');
+      if (player === "X") {$(this).addClass('Xmoves');} else {$(this).addClass('Omoves');}
+      moves[player].push(parseInt($(this).attr('value')));
+      whosTurn(turns);
+      var winner = theWinnerIs();
 
-      $('.box').click(function (event) {
+      if(winner) {
 
-        event.preventDefault();
+          alert("You WIN!!!!!!!!");
+          wins[player]++;
+          $('#num' + player).html(wins[player]);
+          reset();
 
+      } else if (turns === 8) {
+         alert("It's a Tie.............");
+         return false;
+      }
 
-        if (turns%2 === 0) {
+      turns++;
+    });
 
-          if ($(this).hasClass('Xmove') || $(this).hasClass('Omove')) {
-
-            alert('Please click an empty box');
-
-          } else {
-
-          turns++;
-          $(this).addClass('Xmove');
-          whosTurn(1);
-          theWinnerIs();
-          }
-
-        } else {
-
-          if ($(this).hasClass('Xmove') || $(this).hasClass('Omove')) {
-
-            alert('Please click an empty box');
-
-          } else {
-
-          turns++;
-          $(this).addClass('Omove');
-          whosTurn(2);
-          theWinnerIs();
-
-          }
-
-        }
-
-      });
-
-    // Make symbol disappear depending on whos turn it is.
     function whosTurn(t) {
 
-      if (t%2 === 0) {
-
-        crosses.show();
-        noughts.hide();
-
+      if (t%2===0) {
+        $('#imgO').hide();
+        $('#imgX').show();
       } else {
-
-        noughts.show();
-        crosses.hide();
-
+        $('#imgX').hide();
+        $('#imgO').show();
       }
-
     }
-
-
-
-    // define the win logic
 
     function theWinnerIs () {
-    
 
-      if ($('#box1').hasClass('Xmove') && $('#box2').hasClass('Xmove') && $('#box3').hasClass('Xmove') ||
-          $('#box4').hasClass('Xmove') && $('#box5').hasClass('Xmove') && $('#box6').hasClass('Xmove') ||
-          $('#box7').hasClass('Xmove') && $('#box8').hasClass('Xmove') && $('#box9').hasClass('Xmove') ||
-          $('#box1').hasClass('Xmove') && $('#box4').hasClass('Xmove') && $('#box7').hasClass('Xmove') ||
-          $('#box3').hasClass('Xmove') && $('#box6').hasClass('Xmove') && $('#box9').hasClass('Xmove') ||
-          $('#box2').hasClass('Xmove') && $('#box5').hasClass('Xmove') && $('#box8').hasClass('Xmove') ||
-          $('#box2').hasClass('Xmove') && $('#box6').hasClass('Xmove') && $('#box7').hasClass('Xmove') ||
-          $('#box1').hasClass('Xmove') && $('#box6').hasClass('Xmove') && $('#box8').hasClass('Xmove') ) {
 
-            alert("Crosses WIN!!!!!!!!");
-            xWins++;
-            $('#numX').html(xWins);
-            reset();
+      // console.log(turns);
+      var count = 0;
+      if (moves[player].length < 3) return;
+      for(j=0;j<allWins.length; j++) {
 
-      } else if ($('#box1').hasClass('Omove') && $('#box2').hasClass('Omove') && $('#box3').hasClass('Omove') ||
-                $('#box4').hasClass('Omove') && $('#box5').hasClass('Omove') && $('#box6').hasClass('Omove') ||
-                $('#box7').hasClass('Omove') && $('#box8').hasClass('Omove') && $('#box9').hasClass('Omove') ||
-                $('#box1').hasClass('Omove') && $('#box4').hasClass('Omove') && $('#box7').hasClass('Omove') ||
-                $('#box3').hasClass('Omove') && $('#box6').hasClass('Omove') && $('#box9').hasClass('Omove') ||
-                $('#box2').hasClass('Omove') && $('#box5').hasClass('Omove') && $('#box8').hasClass('Omove') ||
-                $('#box2').hasClass('Omove') && $('#box6').hasClass('Omove') && $('#box7').hasClass('Omove') ||
-                $('#box1').hasClass('Omove') && $('#box6').hasClass('Omove') && $('#box8').hasClass('Omove')) {
+        var winningCombination = allWins[j];
+          console.log(player);
+          if(
+            moves[player].indexOf(winningCombination[0]) !== -1 &&
+            moves[player].indexOf(winningCombination[1]) !== -1 &&
+            moves[player].indexOf(winningCombination[2]) !== -1
+          ) return player;
 
-                  alert("Noughts WIN!!!!!!!!");
-                  oWins++;
-                  $('#numO').html(oWins);
-                  reset();
-
-      } else if (turns === 9){
-
-        alert("It's a Tie.............");
-
+        // for (i=0; i < moves[player].length; i++) {
+        //   if (allWins[j].indexOf(moves[player][i]) !== -1) count++;
+        // }
       }
+
+      return false;
+
 
     }
 
-    // reset button function
-
-    function reset() { turns = 0; whosTurn(0); $('.box').removeClass('Xmove'); $('.box').removeClass('Omove'); }
-
-});
+    function reset() {
+      turns = 0; whosTurn(0);
+      $('.box').removeClass('Xmoves');
+      $('.box').removeClass('Omoves');
+      moves = { "X": [], "O": [] };
+    }
+  });
