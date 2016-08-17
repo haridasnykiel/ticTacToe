@@ -1,82 +1,79 @@
-  $(function () {
-    var turns = 0;
-    var wins = { "X": 0, "O": 0 };
-    var moves = { "X": [], "O": [] };
-    var player;
-    var allWins = [[1, 2, 3], [4, 5, 6], [7, 8, 9],
-                  [1, 4, 7], [2, 5, 8], [3, 6, 9],
-                  [3, 5, 7], [1, 5, 9] ];
+$(function() {
+  var game = new Game();
+  console.log(game);
+});
 
-    $('#reset').click(function (event) {
-      event.preventDefault();
-      reset();
-    });
+var Game = function() {
+  this.turns = 0;
+  this.wins = { "X": 0, "O": 0 };
+  this.moves = { "X": [], "O": [] };
+  this.player = "";
+  this.allWins = [[1, 2, 3], [4, 5, 6], [7, 8, 9],
+                [1, 4, 7], [2, 5, 8], [3, 6, 9],
+                [3, 5, 7], [1, 5, 9] ];
+  this.addEventListeners();
+};
 
-    $('.box').click(function (event) {
-      event.preventDefault();
-      player = (turns%2===0) ? "X" : "O";
-      if ($(this).hasClass('Xmoves') || $(this).hasClass('Omoves')) return alert('Please click an empty box');
-      if (player === "X") {$(this).addClass('Xmoves');} else {$(this).addClass('Omoves');}
-      moves[player].push(parseInt($(this).attr('value')));
-      whosTurn(turns);
-      var winner = theWinnerIs();
+Game.prototype.addEventListeners = function() {
+  $('.box').click(function(event) {
+    event.preventDefault();
+    this.play();
+  }.bind(this));
 
-      if(winner) {
+  $('#reset').click(function (event) {
+    event.preventDefault();
+    this.reset();
+  }.bind(this));
+};
 
-          alert("You WIN!!!!!!!!");
-          wins[player]++;
-          $('#num' + player).html(wins[player]);
-          reset();
+Game.prototype.play = function () {
+  this.player = (this.turns%2===0) ? "X" : "O";
+  if ($(event.target).hasClass('Xmoves') || $(event.target).hasClass('Omoves')) return alert('Please click an empty box');
+  if (this.player === "X") {$(event.target).addClass('Xmoves');} else {$(event.target).addClass('Omoves');}
+  this.moves[this.player].push(parseInt($(event.target).attr('value')));
+  console.log(this.moves[this.player]);
+  this.whosTurn(this.turns);
+  var winner = this.winner();
 
-      } else if (turns === 8) {
-         alert("It's a Tie.............");
-         return false;
-      }
+  if(winner) {
+      alert("You WIN!!!!!!!!");
+      this.wins[this.player]++;
+      $('#num' + this.player).html(this.wins[this.player]);
+      this.reset();
+  } else if (this.turns === 8) {
+     alert("It's a Tie.............");
+     return false;
+  }
+  this.turns++;
+};
 
-      turns++;
-    });
+Game.prototype.whosTurn = function (t) {
+  if (t%2===0) {
+    $('#imgO').hide();
+    $('#imgX').show();
+  } else {
+    $('#imgX').hide();
+    $('#imgO').show();
+  }
+};
 
-    function whosTurn(t) {
+Game.prototype.winner = function () {
+  var count = 0;
+  if (this.moves[this.player].length < 3) return;
+  for(j=0;j<this.allWins.length; j++) {
+    var winningCombination = this.allWins[j];
+      if(
+        this.moves[this.player].indexOf(winningCombination[0]) !== -1 &&
+        this.moves[this.player].indexOf(winningCombination[1]) !== -1 &&
+        this.moves[this.player].indexOf(winningCombination[2]) !== -1
+      ) return this.player;
+  }
+  return false;
+};
 
-      if (t%2===0) {
-        $('#imgO').hide();
-        $('#imgX').show();
-      } else {
-        $('#imgX').hide();
-        $('#imgO').show();
-      }
-    }
-
-    function theWinnerIs () {
-
-
-      // console.log(turns);
-      var count = 0;
-      if (moves[player].length < 3) return;
-      for(j=0;j<allWins.length; j++) {
-
-        var winningCombination = allWins[j];
-          console.log(player);
-          if(
-            moves[player].indexOf(winningCombination[0]) !== -1 &&
-            moves[player].indexOf(winningCombination[1]) !== -1 &&
-            moves[player].indexOf(winningCombination[2]) !== -1
-          ) return player;
-
-        // for (i=0; i < moves[player].length; i++) {
-        //   if (allWins[j].indexOf(moves[player][i]) !== -1) count++;
-        // }
-      }
-
-      return false;
-
-
-    }
-
-    function reset() {
-      turns = 0; whosTurn(0);
-      $('.box').removeClass('Xmoves');
-      $('.box').removeClass('Omoves');
-      moves = { "X": [], "O": [] };
-    }
-  });
+Game.prototype.reset = function() {
+  this.turns = 0; this.whosTurn(0);
+  $('.box').removeClass('Xmoves');
+  $('.box').removeClass('Omoves');
+  this.moves = { "X": [], "O": [] };
+};
